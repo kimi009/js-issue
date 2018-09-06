@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" id="it">
+</body>
+<script>
+  function debounce(fun, delay) {
+    return function (args) {
+      var that = this;
+      var _args = args;
+      clearTimeout(fun.Id);
+      fun.Id = setTimeout(() => {
+        fun.call(that, _args)
+      }, delay);
+    }
+  }
+
+  var biu = function () {
+    console.log('biu biu biu ', new Date().toTimeString());
+
+  }
+
+
+  var doom = function () {
+    console.log('doom doom doom ', new Date().toTimeString());
+
+  }
+  var debounceFn = debounce(function (e) {
+    console.log(e);
+  }, 500);
+  var ipt = document.getElementById('it');
+  ipt.addEventListener('keyup', function (e) {
+    // console.log(e.target.value);
+    // debounceFn(e.target.value)
+    throttleAjax(e.target.value)
+  })
+
+  // setInterval(debounce(biu,500),1000)
+  // setInterval(debounce(doom,2000),1000)
+  function throttle(fun, delay) {
+    var last, deferTimer;
+    return function (args) {
+      var that = this;
+      var _args = arguments;
+      var now = +new Date();
+      if (last && now < last + delay) {
+        clearTimeout(deferTimer);
+        deferTimer = setTimeout(function () {
+          last = now;
+          fun.apply(that, _args)
+        }, delay)
+      } else {
+        last = now;
+        fun.apply(that, _args)
+      }
+    }
+  }
+  var throttleAjax = throttle(biu,1000);
+</script>
+
+</html>
